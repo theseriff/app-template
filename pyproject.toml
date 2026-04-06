@@ -12,24 +12,11 @@ description = "app"
 requires-python = ">=3.13,<5"
 readme = "README.md"
 license = "MIT"
-license-files = ["LICEN[CS]E*"]
 authors = [
     { name = "Sergey Yavorsky", email = "maclovi.dev@gmail.com" },
 ]
 keywords = [
-    "jobs",
-    "cron",
-    "asyncio",
-    "cron-jobs",
-    "scheduler",
-    "scheduling",
-    "asynchronous",
-    "job-scheduler",
-    "task-scheduler",
-    "python-scheduler",
-    "background-tasks",
-    "background-jobs",
-    "delayed-tasks",
+    "app",
 ]
 classifiers = [
     "Typing :: Typed",
@@ -45,8 +32,7 @@ classifiers = [
     "Topic :: Software Development :: Libraries :: Python Modules",
     "Topic :: Utilities",
 ]
-dependencies = [
-]
+dependencies = []
 
 [dependency-groups]
 lint = [
@@ -95,9 +81,7 @@ addopts = "--strict-markers --strict-config"
 testpaths = ["tests"]
 asyncio_mode = "auto"
 asyncio_default_fixture_loop_scope = "session"
-filterwarnings = [
-    "ignore:Async functions are always done in the main loop",
-]
+filterwarnings = []
 markers = []
 
 [tool.coverage.run]
@@ -196,7 +180,6 @@ ignore = [
 ]
 
 [tool.ruff.lint.per-file-ignores]
-"benchmarks/**" = ["D", "S101", "T201"]
 "tests/**" = ["S101", "D", "SLF001"]
 
 [tool.ruff.format]
