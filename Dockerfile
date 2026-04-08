@@ -4,13 +4,18 @@ ENV UV_PYTHON_DOWNLOADS=0
 
 WORKDIR /app
 
-COPY --chown=1000:1000 pyproject.toml uv.lock ./
-COPY --chown=1000:1000 ./README.md ./
-COPY --chown=1000:1000 ./src ./src
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked \
+    apt-get update && apt-get install -y --no-install-recommends \
+    gcc \
+    python3-dev
 
+COPY --chown=1000:1000 pyproject.toml uv.lock ./
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --locked --no-install-project --no-dev
 
+COPY --chown=1000:1000 ./README.md ./
+COPY --chown=1000:1000 ./src ./src
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --locked --no-dev
 
