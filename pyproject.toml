@@ -86,6 +86,7 @@ markers = []
 
 [tool.coverage.run]
 plugins = ["covdefaults"]
+relative_files = true
 parallel = true
 branch = true
 concurrency = ["thread", "multiprocessing"]
@@ -95,15 +96,11 @@ omit = ["**/__init__.py"]
 [tool.coverage.paths]
 source = [
     "src",
-    "/home/runner/work/app/app/src",
-    "/Users/runner/work/app/app/src",
-    "D:\\a\\app\\app\\src",
+    "*/userbot/src",
 ]
 tests = [
     "tests",
-    "/home/runner/work/app/app/tests",
-    "/Users/runner/work/app/app/tests",
-    "D:\\a\\app\\app\\tests",
+    "*/userbot/tests",
 ]
 
 [tool.coverage.report]
