@@ -141,6 +141,7 @@ jobs:
           path: htmlcov
 
   build-and-scan:
+    if: github.event.pull_request.draft == false
     needs:
       - test-basic
     name: "Build & Scan"
