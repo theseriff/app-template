@@ -19,14 +19,14 @@ init:
 [doc("Run APP")]
 [group("Common")]
 run *params:
-  @exec uv run --frozen --no-dev -m app.main
+  @exec uv run --locked --no-dev -m app.main
 
 
 # Pre-commit
 [doc("Install pre-commit hooks")]
 [group("pre-commit")]
 _pre-commit *params:
-  uv run --frozen prek {{params}}
+  uv run --frozen --no-dev --group lint prek {{params}}
 
 pre-commit-install:
   just _pre-commit install

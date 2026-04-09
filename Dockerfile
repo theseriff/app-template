@@ -17,7 +17,7 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 COPY --chown=1000:1000 ./README.md ./
 COPY --chown=1000:1000 ./src ./src
 RUN --mount=type=cache,target=/root/.cache/uv \
-    uv sync --locked --no-dev
+    uv sync --frozen --no-dev
 
 FROM python:3.13-slim
 
