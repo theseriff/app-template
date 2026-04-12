@@ -5,6 +5,8 @@ on:
     branches:
       - main
 
+permissions: read-all
+
 env:
   IMAGE_REPOSITORY: ${{ secrets.REGISTRY_HOST }}/${{ github.repository }}
 
@@ -23,6 +25,8 @@ jobs:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           fetch-depth: 0
+          # persist-credentials: true is intentional — semantic-release needs
+          # to push the version tag and commit back to the repo
           persist-credentials: true
           ref: ${{ github.ref_name }}
 
@@ -58,12 +62,18 @@ jobs:
   docker:
     if: needs.release.outputs.released == 'true'
 
-    runs-on: ubuntu-latest
     needs: release
+    runs-on: ubuntu-latest
+
+    concurrency:
+      group: ${{ github.workflow }}-docker-${{ github.ref_name }}
+      cancel-in-progress: false
+
     permissions:
       contents: read
       packages: write
       id-token: write
+      attestations: write
 
     environment:
       name: registry
@@ -102,19 +112,36 @@ jobs:
           DOCKER_METADATA_ANNOTATIONS_LEVELS: manifest,index
 
       - name: Build & Push image
+        id: build
         uses: docker/build-push-action@d08e5c354a6adb9ed34480a06d141179aa583294 # v7.0.0
         with:
           context: .
           push: true
-
           platforms: linux/amd64,linux/arm64
-
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           annotations: ${{ steps.meta.outputs.annotations }}
-
           cache-from: type=gha
           cache-to: type=gha,mode=max
-
           provenance: true
           sbom: true
+
+      - name: Sign image with Cosign (keyless)
+        env:
+          IMAGE_REPOSITORY: ${{ env.IMAGE_REPOSITORY }}
+          IMAGE_DIGEST: ${{ steps.build.outputs.digest }}
+        run: |
+          set -euo pipefail
+          IMAGE="${IMAGE_REPOSITORY}@${IMAGE_DIGEST}"
+          cosign sign --yes "$IMAGE"
+
+      - name: Attest image provenance (SLSA)
+        uses: actions/attest-build-provenance@a2bbfa25375fe432b6a289bc6b6cd05ecd0c4c32 # v4.1.0
+        with:
+          subject-name: ${{ env.IMAGE_REPOSITORY }}
+          subject-digest: ${{ steps.build.outputs.digest }}
+          push-to-registry: true
+
+    outputs:
+      digest: ${{ steps.build.outputs.digest }}
+      image: ${{ env.IMAGE_REPOSITORY }}@${{ steps.build.outputs.digest }}
