@@ -11,13 +11,15 @@ jobs:
     permissions:
       packages: write
       contents: read
+    environment:
+      name: ghcr-retention
     steps:
       - name: Prune old images
         uses: snok/container-retention-policy@3b0972b2276b171b212f8c4efbca59ebba26eceb # v3.0.1
         with:
-          account: ${{ github.repository_owner }}
+          account: user
           image-names: ${{ github.event.repository.name }}
-          cut-off: 2 months ago UTC
-          keep-at-least: 10
+          cut-off: 4w
+          keep-n-most-recent: 10
+          token: ${{ secrets.PAT }}
           account-type: personal
-          token: ${{ secrets.GITHUB_TOKEN }}

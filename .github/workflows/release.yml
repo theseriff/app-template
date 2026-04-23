@@ -48,8 +48,8 @@ jobs:
           uvx --from python-semantic-release semantic-release version
 
       - name: Publish | Upload to GitHub Release Assets
-        uses: python-semantic-release/publish-action@8086c8c16eb04dbeae7e8b55e90239d30a77cb45 # v10.5.3
         if: steps.release.outputs.released == 'true'
+        uses: python-semantic-release/publish-action@8086c8c16eb04dbeae7e8b55e90239d30a77cb45 # v10.5.3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{ steps.release.outputs.tag }}
@@ -108,9 +108,9 @@ jobs:
         with:
           images: ${{ env.IMAGE_REPOSITORY }}
           tags: |
-            type=raw,value=${{ needs.release.outputs.version }}
             type=raw,value=latest
-            type=sha,prefix=sha-,format=short
+            type=sha,prefix=sha-,format=long
+            type=raw,value=${{ needs.release.outputs.version }}
         env:
           DOCKER_METADATA_ANNOTATIONS_LEVELS: manifest,index
 
