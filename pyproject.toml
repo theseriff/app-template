@@ -176,6 +176,14 @@ ignore = [
     "SLF001",
 ]
 
+[tool.ruff.lint.flake8-tidy-imports.banned-api]
+"uuid.uuid1".msg = "Use UUIDGenerator from IoC instead of generating UUIDs directly"
+"uuid.uuid3".msg = "Use UUIDGenerator from IoC instead of generating UUIDs directly"
+"uuid.uuid4".msg = "Use UUIDGenerator from IoC instead of generating UUIDs directly"
+"uuid.uuid5".msg = "Use UUIDGenerator from IoC instead of generating UUIDs directly"
+"uuid.uuid7".msg = "Use UUIDGenerator from IoC instead of generating UUIDs directly"
+"uuid.uuid8".msg = "Use UUIDGenerator from IoC instead of generating UUIDs directly"
+
 [tool.ruff.lint.per-file-ignores]
 "tests/**" = ["S101", "D", "SLF001"]
 
