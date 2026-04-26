@@ -183,9 +183,11 @@ ignore = [
 "uuid.uuid5".msg = "Use UUIDGenerator from IoC instead of generating UUIDs directly"
 "uuid.uuid7".msg = "Use UUIDGenerator from IoC instead of generating UUIDs directly"
 "uuid.uuid8".msg = "Use UUIDGenerator from IoC instead of generating UUIDs directly"
+"datetime.datetime.now".msg = "Use TimeProvider from IoC instead of calling datetime.now() directly"
+"datetime.datetime.utcnow".msg = "Use TimeProvider from IoC instead of calling datetime.utcnow() directly"
 
 [tool.ruff.lint.per-file-ignores]
-"tests/**" = ["S101", "D", "SLF001"]
+"tests/**" = ["S101", "D", "SLF001", "TID251"]
 
 [tool.ruff.format]
 docstring-code-format = true
