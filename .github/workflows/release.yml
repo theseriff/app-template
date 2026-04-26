@@ -33,7 +33,7 @@ jobs:
       - name: Force branch to workflow sha
         run: git reset --hard ${{ github.sha }}
 
-      - uses: astral-sh/setup-uv@681c641aba71e4a1c380be3ab5e12ad51f415867 # v7.1.6
+      - uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b # v8.1.0
         with:
           version: "latest"
           enable-cache: false
@@ -49,7 +49,7 @@ jobs:
 
       - name: Publish | Upload to GitHub Release Assets
         if: steps.release.outputs.released == 'true'
-        uses: python-semantic-release/publish-action@8086c8c16eb04dbeae7e8b55e90239d30a77cb45 # v10.5.3
+        uses: python-semantic-release/publish-action@310a9983a0ae878b29f3aac778d7c77c1db27378 # v10.5.3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{ steps.release.outputs.tag }}
@@ -116,7 +116,7 @@ jobs:
 
       - name: Build & Push image
         id: build
-        uses: docker/build-push-action@d08e5c354a6adb9ed34480a06d141179aa583294 # v7.0.0
+        uses: docker/build-push-action@bcafcacb16a39f128d818304e6c9c0c18556b85f # v7.1.0
         with:
           context: .
           builder: ${{ steps.buildx.outputs.name }}
